@@ -4,9 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import HelloWorld from "./components/HelloWorld";
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <HelloWorld />
   </React.StrictMode>,
   document.getElementById("root")
 );

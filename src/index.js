@@ -8,8 +8,7 @@ import HelloWorld from "./components/HelloWorld";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <HelloWorld />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

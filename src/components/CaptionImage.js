@@ -9,3 +9,14 @@ export default function CaptionImage(props) {
     </div>
   );
 }
+
+class ClassCaptionImage extends React.Component {
+  render() {
+    return (
+      <div>
+        <img src={this.props.imgSrc} alt="로고"></img>
+        <p>{this.props.caption}</p>
+      </div>
+    );
+  }
+}

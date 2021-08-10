@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import HelloWorld from "./components/HelloWorld";
+import reactDom from "react-dom";
 
 ReactDOM.render(
   <React.StrictMode>

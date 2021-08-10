@@ -5,7 +5,31 @@ import CaptionImage from "./components/CaptionImage";
 import Blink from "./components/Blink";
 import BlinkBox from "./components/BlinkBox";
 
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 function App() {
+  return (
+    <Router>
+      <div style={{ textAlign: "center", fontSize: 40 }}>
+        <a href="/1">1번 a 태그</a>
+
+        <br />
+        <Link to="/1">1번 Route 이동</Link>
+        <br />
+        <Link to="/2">2번 Route 이동</Link>
+        <br />
+
+        <Switch>
+          <Route path="/1">Route1번</Route>
+          <Route path="/2">Route2번</Route>
+          <Route>Default</Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+function App2() {
   return (
     <div className="App">
       <header className="App-header">

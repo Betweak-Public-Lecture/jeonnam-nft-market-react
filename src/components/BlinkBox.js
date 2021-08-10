@@ -9,16 +9,22 @@ export default function BlinkBox(props) {
    */
   const [activated, setActivated] = React.useState(false);
 
+  React.useEffect(() => {
+    console.log("activated가 변화");
+    fetch("http://localhost:3001");
+  }, [activated]);
+
+  const onClick = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      setActivated(!activated);
+    },
+    [activated]
+  );
+
   return (
     <div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setActivated(!activated);
-        }}
-      >
-        {activated ? "활성" : "비활성"}
-      </button>
+      <button onClick={onClick}>{activated ? "활성" : "비활성"}</button>
       <Blink text={props.text} isBlink={activated} />
     </div>
   );

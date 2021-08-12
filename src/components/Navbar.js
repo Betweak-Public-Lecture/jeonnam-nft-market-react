@@ -41,7 +41,7 @@ export default function Navbar(props) {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <ConnectMetamask />
+              <ConnectMetamask connectToMetamask={props.connectToMetamask} />
             </Nav.Item>
           </Nav>
         </BSNavbar.Collapse>

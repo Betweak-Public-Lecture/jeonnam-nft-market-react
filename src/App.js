@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "./logo.svg";
 // import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -5,9 +6,16 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 function App() {
+  const [ethAccount, setEthAccount] = React.useState("");
   return (
     <Router>
-      <Navbar />
+      <Navbar
+        connectToMetamask={async () => {
+          const accounts = await window.ethereum.enable();
+          setEthAccount(accounts[0] || "");
+        }}
+      />
+      {ethAccount}
       <Switch>
         <Route path="/" exact>
           Home

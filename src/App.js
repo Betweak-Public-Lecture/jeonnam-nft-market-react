@@ -9,11 +9,21 @@ function App() {
     <Router>
       <Navbar />
       <Switch>
-        <Route path="/">Home</Route>
-        <Route path="/nft-market">NFT Market</Route>
-        <Route path="/item/:tokenId">NFT Detail</Route>
-        <Route path="/my-token">My Token</Route>
-        <Route path="/query">Query</Route>
+        <Route path="/" exact>
+          Home
+        </Route>
+        <Route path="/nft-market" exact>
+          NFT Market
+        </Route>
+        <Route path="/item/:tokenId" exact>
+          NFT Detail
+        </Route>
+        <Route path="/my-token" exact>
+          My Token
+        </Route>
+        <Route path="/query" exact>
+          Query
+        </Route>
       </Switch>
     </Router>
   );

@@ -17,18 +17,26 @@ export default function Navbar(props) {
         <BSNavbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Item>
-              <Link className="nav-link">Home</Link>
+              <Link to="/" className="nav-link">
+                Home
+              </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link className="nav-link">NFT Market</Link>
+              <Link to="/nft-market" className="nav-link">
+                NFT Market
+              </Link>
             </Nav.Item>
           </Nav>
           <Nav>
             <Nav.Item>
-              <Link className="nav-link">My Token</Link>
+              <Link to="/my-token" className="nav-link">
+                My Token
+              </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link className="nav-link">Query</Link>
+              <Link to="/query" className="nav-link">
+                Query
+              </Link>
             </Nav.Item>
           </Nav>
         </BSNavbar.Collapse>

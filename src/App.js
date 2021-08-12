@@ -2,6 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 // import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Web3 from "web3";
 
 import Navbar from "./components/Navbar";
 // page import
@@ -14,6 +15,13 @@ import Query from "./pages/Query";
 
 function App() {
   const [ethAccount, setEthAccount] = React.useState("");
+
+  const loadWeb3 = () => {
+    const web3 = new Web3(Web3.givenProvider);
+    window.web3 = web3;
+  };
+  React.useEffect(loadWeb3, []);
+
   return (
     <Router>
       <Navbar

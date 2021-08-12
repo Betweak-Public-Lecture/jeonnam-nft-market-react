@@ -31,18 +31,21 @@ export default function Navbar(props) {
           </Nav>
           <Nav>
             <Nav.Item>
-              <Link to="/my-token" className="nav-link">
-                My Token
-              </Link>
-            </Nav.Item>
-            <Nav.Item>
               <Link to="/query" className="nav-link">
                 Query
               </Link>
             </Nav.Item>
-            <Nav.Item>
-              <ConnectMetamask connectToMetamask={props.connectToMetamask} />
-            </Nav.Item>
+            {props.ethAccount ? (
+              <Nav.Item>
+                <Link to="/my-token" className="nav-link">
+                  My Token
+                </Link>
+              </Nav.Item>
+            ) : (
+              <Nav.Item>
+                <ConnectMetamask connectToMetamask={props.connectToMetamask} />
+              </Nav.Item>
+            )}
           </Nav>
         </BSNavbar.Collapse>
       </Container>

@@ -21,6 +21,7 @@ function App() {
           const accounts = await window.ethereum.enable();
           setEthAccount(accounts[0] || "");
         }}
+        ethAccount={ethAccount}
       />
       {ethAccount}
       <Switch>

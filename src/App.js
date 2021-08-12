@@ -9,9 +9,11 @@ function App() {
     <Router>
       <Navbar />
       <Switch>
-        <Route path="/1">Route1번</Route>
-        <Route path="/2">Route2번</Route>
-        <Route>Default</Route>
+        <Route path="/">Home</Route>
+        <Route path="/nft-market">NFT Market</Route>
+        <Route path="/item/:tokenId">NFT Detail</Route>
+        <Route path="/my-token">My Token</Route>
+        <Route path="/query">Query</Route>
       </Switch>
     </Router>
   );

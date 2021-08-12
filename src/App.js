@@ -4,6 +4,13 @@ import logo from "./logo.svg";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+// page import
+import Home from "./pages/Home";
+import MarketList from "./pages/MarketList";
+import Minting from "./pages/Minting";
+import MyToken from "./pages/MyToken";
+import NFTDetail from "./pages/NFTDetail";
+import Query from "./pages/Query";
 
 function App() {
   const [ethAccount, setEthAccount] = React.useState("");
@@ -18,19 +25,22 @@ function App() {
       {ethAccount}
       <Switch>
         <Route path="/" exact>
-          Home
+          <Home ethAccount={ethAccount} />
         </Route>
         <Route path="/nft-market" exact>
-          NFT Market
+          <MarketList ethAccount={ethAccount} />
         </Route>
         <Route path="/item/:tokenId" exact>
-          NFT Detail
+          <NFTDetail ethAccount={ethAccount} />
         </Route>
         <Route path="/my-token" exact>
-          My Token
+          <MyToken ethAccount={ethAccount} />
         </Route>
         <Route path="/query" exact>
-          Query
+          <Query ethAccount={ethAccount} />
+        </Route>
+        <Route path="/Minting" exact>
+          <Minting ethAccount={ethAccount} />
         </Route>
       </Switch>
     </Router>

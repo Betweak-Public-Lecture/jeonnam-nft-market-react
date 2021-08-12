@@ -8,6 +8,8 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import ConnectMetamask from "./ConnectMetamask/ConnectMetamask";
+
 export default function Navbar(props) {
   return (
     <BSNavbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -37,6 +39,9 @@ export default function Navbar(props) {
               <Link to="/query" className="nav-link">
                 Query
               </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <ConnectMetamask />
             </Nav.Item>
           </Nav>
         </BSNavbar.Collapse>

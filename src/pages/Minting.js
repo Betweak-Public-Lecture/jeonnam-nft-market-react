@@ -3,6 +3,15 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 
 export default function Minting(props) {
+  const [imageFile, setImageFile] = React.useState(null);
+  const onUpload = (picture, pictureDataURL) => {
+    setImageFile(picture);
+  };
+  const onMint = (e) => {
+    e.preventDefault();
+    console.log(imageFile);
+  };
+
   return (
     <Container style={{ marginTop: 100 }}>
       <Row>
@@ -12,7 +21,12 @@ export default function Minting(props) {
       </Row>
       <Row>
         <Col xs={12}>
-          <ImageUploader />
+          <ImageUploader
+            onChange={onUpload}
+            singleImage={true}
+            imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+            withPreview={true}
+          />
           {/* react-images-upload props참조 --> 
               [rendering 조건]
               1. singlefile
@@ -21,7 +35,9 @@ export default function Minting(props) {
               4. upload한 file을 state에 set하는 것 
           */}
 
-          <Button variant={"dark"}>Mint</Button>
+          <Button variant={"dark"} onClick={onMint}>
+            Mint
+          </Button>
         </Col>
       </Row>
     </Container>

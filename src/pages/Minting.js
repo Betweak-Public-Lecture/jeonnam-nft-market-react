@@ -36,7 +36,9 @@ export default function Minting(props) {
       }),
     });
     console.log(metadata);
+    console.log(metadata.data);
     // console.log(metadata.url);
+    setValue(metadata.data.image);
   };
 
   return (
@@ -82,14 +84,6 @@ export default function Minting(props) {
             imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
             withPreview={true}
           />
-          {/* react-images-upload props참조 --> 
-              [rendering 조건]
-              1. singlefile
-              2. imageFile
-              3. preview 가능
-              4. upload한 file을 state에 set하는 것 
-          */}
-
           <Button variant={"dark"} onClick={onMint}>
             Mint
           </Button>

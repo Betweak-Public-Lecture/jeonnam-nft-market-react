@@ -1,10 +1,11 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 
 import { NFTStorage, File } from "nft.storage";
 const client = new NFTStorage({
-  token: "",
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBFYzExRkE1OGIzMUY3MzEzM2M2NmM3QzAzNGRmNzdDMEE5NWU1NjMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODg1NDAzMjAzMSwibmFtZSI6IkpORlQifQ.YCCp8xERuM--5vKBAmK3LcFXbuZ3vaSNztjOs777Jt0",
 });
 
 export default function Minting(props) {
@@ -14,12 +15,12 @@ export default function Minting(props) {
   const onUpload = (pictures, pictureDataURL) => {
     setImageFile(pictures[0]);
     setImageBinary(pictureDataURL);
-    console.log(pictureDataURL);
+    // console.log(pictureDataURL);
   };
 
   const onMint = async (e) => {
     e.preventDefault();
-    console.log(imageFile);
+    // console.log(imageFile);
 
     const metadata = await client.store({
       name: "sampleName",
@@ -28,8 +29,8 @@ export default function Minting(props) {
         type: imageFile.type,
       }),
     });
-    console.log(metadata);
-    console.log(metadata.url);
+    // console.log(metadata);
+    // console.log(metadata.url);
   };
 
   return (
@@ -39,7 +40,22 @@ export default function Minting(props) {
           <h2>Mint an Item</h2>
         </Col>
       </Row>
+
       <Row>
+        <Col xs={12}>
+          <Form.Group className="mb-3" controlId="tokenName">
+            <Form.Control type="text" placeholder="Enter Token Name" />
+          </Form.Group>
+        </Col>
+        <Col xs={12}>
+          <Form.Group className="mb-3" controlId="tokenDescription">
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Enter Token Description"
+            />
+          </Form.Group>
+        </Col>
         <Col xs={12}>
           <ImageUploader
             onChange={onUpload}

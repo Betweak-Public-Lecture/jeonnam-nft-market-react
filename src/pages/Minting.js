@@ -38,7 +38,6 @@ export default function Minting(props) {
     console.log(metadata);
     console.log(metadata.data);
     // console.log(metadata.url);
-    setValue(metadata.data.image);
   };
 
   return (

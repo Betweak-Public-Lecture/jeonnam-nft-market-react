@@ -11,6 +11,8 @@ const client = new NFTStorage({
 export default function Minting(props) {
   const [imageFile, setImageFile] = React.useState(null);
   const [imageBinary, setImageBinary] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [desc, setDesc] = React.useState("");
 
   const onUpload = (pictures, pictureDataURL) => {
     setImageFile(pictures[0]);
@@ -21,15 +23,19 @@ export default function Minting(props) {
   const onMint = async (e) => {
     e.preventDefault();
     // console.log(imageFile);
+    if (!name || !desc || !imageBinary || !imageFile) {
+      console.error("filed is required.");
+      return false;
+    }
 
     const metadata = await client.store({
-      name: "sampleName",
-      description: "sampleDesc",
+      name: name,
+      description: desc,
       image: new File(imageBinary, imageFile.name, {
         type: imageFile.type,
       }),
     });
-    // console.log(metadata);
+    console.log(metadata);
     // console.log(metadata.url);
   };
 
@@ -44,18 +50,31 @@ export default function Minting(props) {
       <Row>
         <Col xs={12}>
           <Form.Group className="mb-3" controlId="tokenName">
-            <Form.Control type="text" placeholder="Enter Token Name" />
+            <Form.Control
+              type="text"
+              placeholder="Enter Token Name"
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              value={name}
+            />
           </Form.Group>
         </Col>
+
         <Col xs={12}>
           <Form.Group className="mb-3" controlId="tokenDescription">
             <Form.Control
               as="textarea"
               rows={4}
               placeholder="Enter Token Description"
+              onChange={(e) => {
+                setDesc(e.target.value);
+              }}
+              value={desc}
             />
           </Form.Group>
         </Col>
+
         <Col xs={12}>
           <ImageUploader
             onChange={onUpload}

@@ -2,14 +2,34 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
 
+import { NFTStorage, File } from "nft.storage";
+const client = new NFTStorage({
+  token: "",
+});
+
 export default function Minting(props) {
   const [imageFile, setImageFile] = React.useState(null);
-  const onUpload = (picture, pictureDataURL) => {
-    setImageFile(picture);
+  const [imageBinary, setImageBinary] = React.useState("");
+
+  const onUpload = (pictures, pictureDataURL) => {
+    setImageFile(pictures[0]);
+    setImageBinary(pictureDataURL);
+    console.log(pictureDataURL);
   };
-  const onMint = (e) => {
+
+  const onMint = async (e) => {
     e.preventDefault();
     console.log(imageFile);
+
+    const metadata = await client.store({
+      name: "sampleName",
+      description: "sampleDesc",
+      image: new File(imageBinary, imageFile.name, {
+        type: imageFile.type,
+      }),
+    });
+    console.log(metadata);
+    console.log(metadata.url);
   };
 
   return (

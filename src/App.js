@@ -31,7 +31,6 @@ function App() {
         }}
         ethAccount={ethAccount}
       />
-      {ethAccount}
       <Switch>
         <Route path="/" exact>
           <Home ethAccount={ethAccount} />
@@ -48,7 +47,7 @@ function App() {
         <Route path="/query" exact>
           <Query ethAccount={ethAccount} />
         </Route>
-        <Route path="/Minting" exact>
+        <Route path="/minting" exact>
           <Minting ethAccount={ethAccount} />
         </Route>
       </Switch>

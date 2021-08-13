@@ -35,6 +35,11 @@ export default function Navbar(props) {
                 Query
               </Link>
             </Nav.Item>
+            <Nav.Item>
+              <Link to="/minting" className="nav-link">
+                Mint an Item
+              </Link>
+            </Nav.Item>
             {props.ethAccount ? (
               <Nav.Item>
                 <Link to="/my-token" className="nav-link">

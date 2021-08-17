@@ -14,7 +14,8 @@ import NFTDetail from "./pages/NFTDetail";
 import Query from "./pages/Query";
 
 // artifacts import
-import jnftArtifact from "../build/contracts/JNFT.json";
+import jnftArtifact from "./artifacts/JNFT.json";
+import jnftMarketArtifact from "./artifacts/JNFTMarket.json";
 
 function App() {
   const [ethAccount, setEthAccount] = React.useState("");
@@ -22,6 +23,18 @@ function App() {
 
   const loadWeb3 = () => {
     const web3 = new Web3(Web3.givenProvider);
+
+    const jnftContract = new web3.eth.Contract(
+      jnftArtifact.abi,
+      jnftArtifact.networks["5777"].address
+    );
+    const jnftMarketContract = new web3.eth.Contract(
+      jnftMarketArtifact.abi,
+      jnftMarketArtifact.networks["5777"].address
+    );
+    web3.jnftContract = jnftContract;
+    web3.marketContract = jnftMarketContract;
+
     setWeb3(web3);
   };
   React.useEffect(loadWeb3, []);
@@ -37,22 +50,22 @@ function App() {
       />
       <Switch>
         <Route path="/" exact>
-          <Home ethAccount={ethAccount} />
+          <Home ethAccount={ethAccount} web3={web3} />
         </Route>
         <Route path="/nft-market" exact>
-          <MarketList ethAccount={ethAccount} />
+          <MarketList ethAccount={ethAccount} web3={web3} />
         </Route>
         <Route path="/item/:tokenId" exact>
-          <NFTDetail ethAccount={ethAccount} />
+          <NFTDetail ethAccount={ethAccount} web3={web3} />
         </Route>
         <Route path="/my-token" exact>
-          <MyToken ethAccount={ethAccount} />
+          <MyToken ethAccount={ethAccount} web3={web3} />
         </Route>
         <Route path="/query" exact>
-          <Query ethAccount={ethAccount} />
+          <Query ethAccount={ethAccount} web3={web3} />
         </Route>
         <Route path="/minting" exact>
-          <Minting ethAccount={ethAccount} />
+          <Minting ethAccount={ethAccount} web3={web3} />
         </Route>
       </Switch>
     </Router>

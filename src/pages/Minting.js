@@ -8,7 +8,7 @@ const client = new NFTStorage({
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBFYzExRkE1OGIzMUY3MzEzM2M2NmM3QzAzNGRmNzdDMEE5NWU1NjMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyODg1NDAzMjAzMSwibmFtZSI6IkpORlQifQ.YCCp8xERuM--5vKBAmK3LcFXbuZ3vaSNztjOs777Jt0",
 });
 
-export default function Minting(props) {
+export default function Minting({ ethAccount, web3 }) {
   const [imageFile, setImageFile] = React.useState(null);
   const [imageBinary, setImageBinary] = React.useState("");
   const [name, setName] = React.useState("");
@@ -38,10 +38,13 @@ export default function Minting(props) {
     });
     console.log(token);
     console.log(token.embed());
-    // console.log(metadata.data);
-    // console.log(metadata.url);
+    const imageUrl = token.embed().image.href;
 
     // 1. NFT Contract에서 createToken 호출
+    const tokenTx = await web3.jnftContract.methods.createToken(imageUrl).send({
+      from: ethAccount,
+    });
+    console.log(tokenTx);
     // 2. NFTMarket-Contract에서 createMarketItem호출
   };
 

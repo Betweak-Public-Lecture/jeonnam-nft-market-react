@@ -13,12 +13,16 @@ import MyToken from "./pages/MyToken";
 import NFTDetail from "./pages/NFTDetail";
 import Query from "./pages/Query";
 
+// artifacts import
+import jnftArtifact from "../build/contracts/JNFT.json";
+
 function App() {
   const [ethAccount, setEthAccount] = React.useState("");
+  const [web3, setWeb3] = React.useState(null);
 
   const loadWeb3 = () => {
     const web3 = new Web3(Web3.givenProvider);
-    window.web3 = web3;
+    setWeb3(web3);
   };
   React.useEffect(loadWeb3, []);
 

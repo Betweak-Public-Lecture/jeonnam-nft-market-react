@@ -27,15 +27,17 @@ export default function Minting(props) {
       console.error("filed is required.");
       return false;
     }
+    console.log(imageFile);
 
     const token = await client.store({
       name: name,
       description: desc,
       image: new File(imageFile, imageFile[0].name, {
-        type: imageFile.type,
+        type: imageFile[0].type,
       }),
     });
     console.log(token);
+    console.log(token.embed());
     // console.log(metadata.data);
     // console.log(metadata.url);
 

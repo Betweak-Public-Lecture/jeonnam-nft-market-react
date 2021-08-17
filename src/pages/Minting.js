@@ -15,7 +15,7 @@ export default function Minting(props) {
   const [desc, setDesc] = React.useState("");
 
   const onUpload = (pictures, pictureDataURL) => {
-    setImageFile(pictures[0]);
+    setImageFile(pictures);
     setImageBinary(pictureDataURL);
     // console.log(pictureDataURL);
   };
@@ -28,16 +28,19 @@ export default function Minting(props) {
       return false;
     }
 
-    const metadata = await client.store({
+    const token = await client.store({
       name: name,
       description: desc,
-      image: new File(imageBinary, imageFile.name, {
+      image: new File(imageFile, imageFile[0].name, {
         type: imageFile.type,
       }),
     });
-    console.log(metadata);
-    console.log(metadata.data);
+    console.log(token);
+    // console.log(metadata.data);
     // console.log(metadata.url);
+
+    // 1. NFT Contract에서 createToken 호출
+    // 2. NFTMarket-Contract에서 createMarketItem호출
   };
 
   return (

@@ -66,14 +66,31 @@ export default function MyToken({ web3, ethAccount }) {
                 onClick={() => {
                   const isAgree = window.confirm("판매하시겠습니까?");
                   if (isAgree) {
+                    console.log(web3.marketContract);
                     const _price = window.prompt(
                       "가격을 입력해주세요 (단위 - wei)"
                     );
                     const price = parseInt(_price);
                     // marketItem을 등록하는 함수
                     // (address _nftContract, uint256 _tokenId, uint256 _price)
-                    // _nftContract: jnftContractAddress // _tokenId: myTokens[idx], _price: price
-                    web3.marketContract.methods.createMarketItem();
+
+                    // _nftContract: jnftContractAddress
+                    // _tokenId: myTokens[idx],
+                    // _price: price
+                    console.log(web3);
+                    web3.marketContract.methods
+                      .createMarketItem(
+                        web3.jnftContract._address,
+                        myTokens[idx],
+                        _price
+                      )
+                      .send({
+                        from: ethAccount,
+                        value: web3.utils.toWei("0.001", "ether"),
+                      })
+                      .then((receipt) => {
+                        console.log("receipt", receipt);
+                      });
                   }
                 }}
               >

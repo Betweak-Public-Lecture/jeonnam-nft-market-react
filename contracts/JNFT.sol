@@ -33,13 +33,35 @@ contract JNFT is ERC721URIStorage {
     @return {tokenId}
    */
   function createToken(string memory _tokenURI) public returns (uint256){
-    _mint(msg.sender, _tokenId);
-    _setTokenURI(_tokenId, _tokenURI);
+    _mint(msg.sender, _tokenId); // 기록: <ERC721> Contract
+    _setTokenURI(_tokenId, _tokenURI); // 기록: <ERC721URIStorage> Contract
 
     setApprovalForAll(_marketAddress, true);
 
     _tokenId++;
     return (_tokenId - 1);
   }
+
+  /**
+   * address값으로 tokenId 배열을 return
+   * @return {tokenId[]}
+   */
+  function fetchTokensByAddress(address _owner) external view returns (uint256[] memory){
+    uint256 balance = balanceOf(_owner);
+    uint256[] memory result = new uint256[](balance);
+
+    uint256 count = 0;
+    for (uint256 i=0; i<_tokenId; i++){
+      address tokenOwner = ownerOf(i);
+      if (tokenOwner == _owner){
+        result[count] = i;
+        count++;
+      }
+    }
+
+    return result;
+  }
+
+
 
 }

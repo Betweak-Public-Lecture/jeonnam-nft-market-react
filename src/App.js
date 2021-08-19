@@ -35,6 +35,11 @@ function App() {
     web3.jnftContract = jnftContract;
     web3.marketContract = jnftMarketContract;
 
+    web3.eth.getAccounts().then((accounts) => {
+      if (accounts.length > 0) {
+        setEthAccount(accounts[0]);
+      }
+    });
     setWeb3(web3);
   };
   React.useEffect(loadWeb3, []);

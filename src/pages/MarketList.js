@@ -4,18 +4,33 @@ import MarketListItem from "../components/MarketListItem";
 
 import Logo from "../logo.svg";
 
-export default function MarketList(props) {
+export default function MarketList({ web3, ethAccount }) {
+  const [unSoldMarketItems, setUnSoldMarketItems] = React.useState([]);
+
+  React.useEffect(() => {
+    if (web3 && ethAccount) {
+      web3.marketContract.methods
+        .fetchUnsoldMarketItems()
+        .call({
+          from: ethAccount,
+        })
+        .then((result) => {
+          console.log(result);
+          setUnSoldMarketItems(result);
+        });
+    }
+  }, [web3, ethAccount]);
+
   return (
     <Container style={{ marginTop: 120 }}>
       <Row>
-        <Col xs={12} md={4}>
-          <MarketListItem
-            imageSrc={Logo}
-            title={"NFT1"}
-            description={"설명"}
-            tokenId={1}
-          />
-        </Col>
+        {unSoldMarketItems.map(function (item, idx) {
+          return (
+            <Col xs={12} md={3} className="my-3" key={item.itemId}>
+              <MarketListItem item={item} />
+            </Col>
+          );
+        })}
       </Row>
     </Container>
   );

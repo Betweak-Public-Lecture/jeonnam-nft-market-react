@@ -17,6 +17,11 @@ contract JNFTMarket is Ownable {
     uint256 private _itemSoldCount; // 팔린 item의 개수
     uint256 listingPrice = 0.001 ether;
 
+    // _aleradyMarketItem: 
+    // key:contractAddress, value mapping(uint256(_tokenId)=>bool(true, false)) 
+    mapping(address => mapping(uint256 => bool)) private _alreadyMarketItem;
+    // (nftContract, tokenId)
+
     struct MarketItem{
         uint256 itemId;         // JNFTMarket에서 관리할 id
         uint256 tokenId;        // NFT Contract에서 관리할 id
@@ -60,6 +65,10 @@ contract JNFTMarket is Ownable {
     function createMarketItem(address _nftContract, uint256 _tokenId, uint256 _price) public payable {
         // 1. ethereum의 양이 listingPrice만큼 존재하는지
         require(msg.value == listingPrice);
+
+        // 2. _nftContract와 _tokenId가 현재 팔리고 있지 않은지 확인하여라.
+        require(!_alreadyMarketItem[_nftContract][_tokenId]);
+
         require(_price > 0);
 
         // 실제 NFT 토큰이 같은 JNFT Contract에 존재하기 때문에 
@@ -67,6 +76,9 @@ contract JNFTMarket is Ownable {
         // ==> 해당 컨트랙트에 접근해서 원소유주가 _tokenId의 주인이 맞는지 체크가 필요. 
         address nftOwner = IERC721(_nftContract).ownerOf(_tokenId); // 주소
         require(nftOwner == msg.sender);
+
+        // 2-1. 팔고 있는 중이라고 명시
+        _alreadyMarketItem[_nftContract][_tokenId] = true;
 
         idToMarketItem[_itemIds] = MarketItem(_itemIds, _tokenId, _price, _nftContract, msg.sender, address(0));
         _itemIds++;
@@ -94,6 +106,8 @@ contract JNFTMarket is Ownable {
 
         //- 실제 JNFT의 contract를 발생시켜야 합니다. (JNFT의 transferFrom 호출)
         IERC721(item.nftContract).transferFrom(item.seller, msg.sender, item.tokenId);
+
+        _alreadyMarketItem[item.nftContract][item.tokenId] = false;
         item.owner = msg.sender;
         _itemSoldCount++;
         // seller에게 이더리움 전송하기

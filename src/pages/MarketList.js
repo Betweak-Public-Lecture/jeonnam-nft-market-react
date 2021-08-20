@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import MarketListItem from "../components/MarketListItem";
 
 import Logo from "../logo.svg";
+import { Link } from "react-router-dom";
 
 export default function MarketList({ web3, ethAccount }) {
   const [unSoldMarketItems, setUnSoldMarketItems] = React.useState([]);
@@ -27,7 +28,13 @@ export default function MarketList({ web3, ethAccount }) {
         {unSoldMarketItems.map(function (item, idx) {
           return (
             <Col xs={12} md={3} className="my-3" key={item.itemId}>
-              <MarketListItem item={item} />
+              <Link to={`/item/${item.itemId}`}>
+                <MarketListItem
+                  item={item}
+                  web3={web3}
+                  ethAccount={ethAccount}
+                />
+              </Link>
             </Col>
           );
         })}

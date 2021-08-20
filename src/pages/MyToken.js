@@ -4,7 +4,7 @@ import React from "react";
  * MarketList와 비슷한 형태의 layout을 가지도록 구성.
  * ** react-bootstrap 이용.
  */
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, CardGroup } from "react-bootstrap";
 import MarketListItem from "../components/MarketListItem";
 import Logo from "../logo.svg";
 
@@ -61,40 +61,47 @@ export default function MyToken({ web3, ethAccount }) {
       <Row>
         {tokenURIs.map((item, idx) => {
           return (
-            <Col xs={12} md={4}>
-              <div
-                onClick={() => {
-                  const isAgree = window.confirm("판매하시겠습니까?");
-                  if (isAgree) {
-                    console.log(web3.marketContract);
-                    const _price = window.prompt(
-                      "가격을 입력해주세요 (단위 - wei)"
-                    );
-                    const price = parseInt(_price);
-                    // marketItem을 등록하는 함수
-                    // (address _nftContract, uint256 _tokenId, uint256 _price)
+            <Col xs={12} md={3} className="my-3">
+              <div>
+                <Card>
+                  <Card.Header>{myTokens[idx]}</Card.Header>
+                  <Card.Img src={item} />
+                  <Card.Body>
+                    <Button
+                      onClick={() => {
+                        const isAgree = window.confirm("판매하시겠습니까?");
+                        if (isAgree) {
+                          console.log(web3.marketContract);
+                          const _price = window.prompt(
+                            "가격을 입력해주세요 (단위 - wei)"
+                          );
+                          // marketItem을 등록하는 함수
+                          // (address _nftContract, uint256 _tokenId, uint256 _price)
 
-                    // _nftContract: jnftContractAddress
-                    // _tokenId: myTokens[idx],
-                    // _price: price
-                    console.log(web3);
-                    web3.marketContract.methods
-                      .createMarketItem(
-                        web3.jnftContract._address,
-                        myTokens[idx],
-                        _price
-                      )
-                      .send({
-                        from: ethAccount,
-                        value: web3.utils.toWei("0.001", "ether"),
-                      })
-                      .then((receipt) => {
-                        console.log("receipt", receipt);
-                      });
-                  }
-                }}
-              >
-                <MarketListItem imageSrc={item} tokenId={myTokens[idx]} />
+                          // _nftContract: jnftContractAddress
+                          // _tokenId: myTokens[idx],
+                          // _price: price
+                          console.log(web3);
+                          web3.marketContract.methods
+                            .createMarketItem(
+                              web3.jnftContract._address,
+                              myTokens[idx],
+                              _price
+                            )
+                            .send({
+                              from: ethAccount,
+                              value: web3.utils.toWei("0.001", "ether"),
+                            })
+                            .then((receipt) => {
+                              console.log("receipt", receipt);
+                            });
+                        }
+                      }}
+                    >
+                      Store
+                    </Button>
+                  </Card.Body>
+                </Card>
               </div>
             </Col>
           );

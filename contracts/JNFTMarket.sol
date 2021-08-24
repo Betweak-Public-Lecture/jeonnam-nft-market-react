@@ -44,11 +44,11 @@ contract JNFTMarket is Ownable {
 
     // 1. nftContract 추가 (contractList에 추가.)
     function addNFTContract(address _nftContract){
-        require(!_existNFTContract(_nftcontract);)
+        require(!_existNFTContract(_nftContract));
         contractList.push(_nftContract);
         contractNum++;
     }
-    function _existNFTContract(address _nftcontract) internal view returns(bool){
+    function _existNFTContract(address _nftContract) internal view returns(bool){
         bool result;
         for (uint256 i=0; i<contractNum; i++){
             if (contractList[i] == _nftContract){
@@ -63,7 +63,7 @@ contract JNFTMarket is Ownable {
         userNFTContract[msg.sender].push(_nftContract);
     }
 
-    function fetchContractByUser() public view returns(address[]) {
+    function fetchContractByUser() public view returns(address[] memory) {
         return userNFTContract[msg.sender];
     }
 

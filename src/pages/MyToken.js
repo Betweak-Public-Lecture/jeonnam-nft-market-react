@@ -4,7 +4,15 @@ import React from "react";
  * MarketList와 비슷한 형태의 layout을 가지도록 구성.
  * ** react-bootstrap 이용.
  */
-import { Container, Row, Col, Card, Button, CardGroup } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  CardGroup,
+  Form,
+} from "react-bootstrap";
 import MarketListItem from "../components/MarketListItem";
 import Logo from "../logo.svg";
 
@@ -12,6 +20,7 @@ export default function MyToken({ web3, ethAccount }) {
   const [tokenCount, setTokenCount] = React.useState(0);
   const [myTokens, setMyTokens] = React.useState([]);
   const [tokenURIs, setTokenURIs] = React.useState([]);
+  const [nftAddress, setNftAddress] = React.useState("");
 
   React.useEffect(() => {
     if (web3 && ethAccount) {
@@ -57,6 +66,31 @@ export default function MyToken({ web3, ethAccount }) {
     <Container>
       <Row className="my-4">
         <h2>My Tokens ({tokenCount})</h2>
+      </Row>
+      <Row className="my-4">
+        <Col>
+          <Form.Control
+            type="text"
+            onChange={(e) => {
+              setNftAddress(e.target.value);
+            }}
+            value={nftAddress}
+          />
+          <Button
+            onClick={async (e) => {
+              e.preventDefault();
+              const receipt = await web3.marketContract.methods
+                .addMyTokenContract(nftAddress)
+                .send({
+                  from: ethAccount,
+                });
+              setNftAddress("");
+              console.log(receipt);
+            }}
+          >
+            조회
+          </Button>
+        </Col>
       </Row>
       <Row>
         {tokenURIs.map((item, idx) => {

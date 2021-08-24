@@ -12,8 +12,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
  */
 
 
-contract JNFT is ERC721URIStorage {
-  address private _marketAddress;
+contract NFTSimple is ERC721URIStorage {
   uint256 private _tokenId;
 
   // struct NFTItem{
@@ -21,9 +20,7 @@ contract JNFT is ERC721URIStorage {
   //   uint16 txCount
   // }
 
-  constructor(address _marketStoreAddress) ERC721("JeonNam NFT", "JNFT"){
-    _marketAddress = _marketStoreAddress;
-  }
+  constructor() ERC721("NFT Simple", "NFT2"){}
 
   /**
     1. token ID 만들기
@@ -36,7 +33,7 @@ contract JNFT is ERC721URIStorage {
     _mint(msg.sender, _tokenId); // 기록: <ERC721> Contract
     _setTokenURI(_tokenId, _tokenURI); // 기록: <ERC721URIStorage> Contract
 
-    setApprovalForAll(_marketAddress, true);
+    // setApprovalForAll(_marketAddress, true);
 
     _tokenId++;
     return (_tokenId - 1);

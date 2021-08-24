@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import ImageUploader from "react-images-upload";
+import jnftArtifact from "../artifacts/JNFT.json";
+import nftSimpleArtifact from "../artifacts/NFTSimple.json";
 
 import { NFTStorage, File } from "nft.storage";
 const client = new NFTStorage({
@@ -13,6 +15,9 @@ export default function Minting({ ethAccount, web3 }) {
   const [imageBinary, setImageBinary] = React.useState("");
   const [name, setName] = React.useState("");
   const [desc, setDesc] = React.useState("");
+  const [targetNFT, setTargetNFT] = React.useState(
+    jnftArtifact.networks["5777"].address
+  );
 
   const onUpload = (pictures, pictureDataURL) => {
     setImageFile(pictures);
@@ -37,11 +42,18 @@ export default function Minting({ ethAccount, web3 }) {
       }),
     });
     console.log(token);
+
+    /**
+     * [실습]
+     * imageURL저장 X ==> token.url  저장.
+     */
     console.log(token.embed());
     const imageUrl = token.embed().image.href;
 
     // 1. NFT Contract에서 createToken 호출
-    const tokenTx = await web3.jnftContract.methods.createToken(imageUrl).send({
+    const nftContract = web3.jnftContract.clone();
+    nftContract.options.address = targetNFT;
+    const tokenTx = await nftContract.methods.createToken(token.url).send({
       from: ethAccount,
     });
     console.log(tokenTx);
@@ -57,6 +69,24 @@ export default function Minting({ ethAccount, web3 }) {
       </Row>
 
       <Row>
+        <Col xs={12}>
+          <Form.Group className="mb-3">
+            <Form.Select
+              onChange={(e) => {
+                console.log(e.target.value);
+                setTargetNFT(e.target.value);
+              }}
+            >
+              <option value={jnftArtifact.networks["5777"].address}>
+                {jnftArtifact.contractName}
+              </option>
+              <option value={nftSimpleArtifact.networks["5777"].address}>
+                {nftSimpleArtifact.contractName}
+              </option>
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
         <Col xs={12}>
           <Form.Group className="mb-3" controlId="tokenName">
             <Form.Control

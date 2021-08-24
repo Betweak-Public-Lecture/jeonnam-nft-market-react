@@ -43,7 +43,7 @@ contract JNFTMarket is Ownable {
     mapping(address => address[]) userNFTContract;
 
     // 1. nftContract 추가 (contractList에 추가.)
-    function addNFTContract(address _nftContract){
+    function addNFTContract(address _nftContract) public {
         require(!_existNFTContract(_nftContract));
         contractList.push(_nftContract);
         contractNum++;
@@ -59,7 +59,8 @@ contract JNFTMarket is Ownable {
     }
 
     function addMyTokenContract(address _nftContract) public {
-        require(IERC721(_nftContract).name());
+        uint256 balanceOf = IERC721(_nftContract).balanceOf(msg.sender);
+        require(balanceOf >= 0);
         userNFTContract[msg.sender].push(_nftContract);
     }
 

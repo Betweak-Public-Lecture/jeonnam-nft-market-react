@@ -68,25 +68,60 @@ export default function MyToken({ web3, ethAccount }) {
                   <Card.Img src={item} />
                   <Card.Body>
                     <Button
-                      onClick={() => {
+                      onClick={async () => {
                         const isAgree = window.confirm("판매하시겠습니까?");
                         if (isAgree) {
                           console.log(web3.marketContract);
                           const _price = window.prompt(
-                            "가격을 입력해주세요 (단위 - wei)"
+                            "가격을 입력해주세요 (단위 - eth)"
                           );
-                          // marketItem을 등록하는 함수
-                          // (address _nftContract, uint256 _tokenId, uint256 _price)
+                          /**
+                           * createMarketItem 전에 해줘야 할 것들
+                           * 1. 해당 nft-contract에서 market의 중개 허가를 받았는지 체크
+                           * 2. 해당 nft-contract에서 허가O ==> createMarketItem
+                           * 3. 해당 nft-contract에서 허가X
+                           *    ==> 4. 허가 받고
+                           *    ==> 5. createMarketItem 호출
+                           */
+                          // 1. 해당 nft-contract에서 marektContract의 중개 허가 체크
+                          const nftContract = web3.jnftContract.clone();
+                          const isApproved = await nftContract.methods
+                            .isApprovedForAll(
+                              ethAccount,
+                              web3.marketContract.options.address
+                            )
+                            .call({ from: ethAccount });
+                          console.log(isApproved);
+                          // 3. 해당 nft-contract에서 허가X
+                          if (
+                            !isApproved &&
+                            window.confirm(
+                              "등록하시려면 해당 market의 권한을 할당 해 주셔야합니다."
+                            )
+                          ) {
+                            try {
+                              // 4. 해당 nftContract에 허가 받는다.
+                              const receipt = await nftContract.methods
+                                .setApprovalForAll(
+                                  web3.marketContract.options.address,
+                                  true
+                                )
+                                .send({
+                                  from: ethAccount,
+                                });
+                              console.log(receipt);
+                            } catch (error) {
+                              console.error(error);
+                              return;
+                            }
+                          }
+                          // 5. createMarketItem 호출
 
-                          // _nftContract: jnftContractAddress
-                          // _tokenId: myTokens[idx],
-                          // _price: price
-                          console.log(web3);
                           web3.marketContract.methods
                             .createMarketItem(
                               web3.jnftContract._address,
                               myTokens[idx],
-                              _price
+                              web3.utils.toWei(_price, "ether")
                             )
                             .send({
                               from: ethAccount,

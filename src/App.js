@@ -40,6 +40,12 @@ function App() {
         setEthAccount(accounts[0]);
       }
     });
+    console.log(web3.marketContract);
+
+    web3.marketContract.events.MarketItemCreated({}, (err, data) => {
+      console.log("event발생");
+      console.log(data);
+    });
     setWeb3(web3);
   };
   React.useEffect(loadWeb3, []);

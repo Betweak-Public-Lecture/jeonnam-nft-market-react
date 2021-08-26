@@ -22,6 +22,5 @@ export async function getTokensByEvent(contractAddr, userAddr) {
     }
   }
 
-  console.log(result);
   return result;
 }

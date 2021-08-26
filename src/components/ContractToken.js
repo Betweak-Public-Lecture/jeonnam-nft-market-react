@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import web3, { erc721Contract } from "../utils/ether";
+import { getTokensByEvent } from "../utils/service";
 
 export default function ContractToken(props) {
   // 호출된 모든 Transfer Event를 가져옴.
@@ -15,20 +16,8 @@ export default function ContractToken(props) {
   }, []);
 
   React.useEffect(() => {
-    if (address) {
-      erc721Contract.options.address = address;
-      // Contract.getPastEvent ==> 지난 event 모두 가져옴.
-      erc721Contract
-        .getPastEvents("Transfer", {
-          filter: {
-            to: ethAccount,
-          },
-          fromBlock: 0,
-          toBlock: "latest",
-        })
-        .then((events) => {
-          console.log(events);
-        });
+    if (address && ethAccount) {
+      getTokensByEvent(address, ethAccount);
     }
   }, [address, ethAccount]);
 

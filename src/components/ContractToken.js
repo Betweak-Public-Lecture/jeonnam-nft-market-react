@@ -12,6 +12,8 @@ export default function ContractToken(props) {
   const [ethAccount, setEthAccount] = React.useState("");
   const [tokens, setTokens] = React.useState([]);
 
+  const [tokenSymbol, setTokenSymbol] = React.useState("");
+
   React.useEffect(() => {
     web3.eth.requestAccounts().then((accounts) => {
       setEthAccount(accounts[0]);
@@ -20,6 +22,15 @@ export default function ContractToken(props) {
 
   React.useEffect(() => {
     if (address && ethAccount) {
+      const ercContract = jnftContract.clone();
+      ercContract.options.address = address;
+      ercContract.methods
+        .symbol()
+        .call()
+        .then((symbol) => {
+          setTokenSymbol(symbol);
+        });
+
       getTokensByEvent(address, ethAccount).then((tokens) => {
         setTokens(tokens);
       });
@@ -30,7 +41,9 @@ export default function ContractToken(props) {
     <Container>
       <Row>
         <Col xs={12} className="my-3">
-          <h3>{props.address}</h3>
+          <h3>
+            {tokenSymbol}({props.address})
+          </h3>
         </Col>
       </Row>
       <Row>

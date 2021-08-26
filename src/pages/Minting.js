@@ -48,7 +48,6 @@ export default function Minting({ ethAccount, web3 }) {
      * imageURL저장 X ==> token.url  저장.
      */
     console.log(token.embed());
-    const imageUrl = token.embed().image.href;
 
     // 1. NFT Contract에서 createToken 호출
     const nftContract = web3.jnftContract.clone();
@@ -57,7 +56,6 @@ export default function Minting({ ethAccount, web3 }) {
       from: ethAccount,
     });
     console.log(tokenTx);
-    // 2. NFTMarket-Contract에서 createMarketItem호출
   };
 
   return (

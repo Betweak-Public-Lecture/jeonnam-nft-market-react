@@ -16,11 +16,52 @@ import {
 import MarketListItem from "../components/MarketListItem";
 import Logo from "../logo.svg";
 
+import ERC721Artifacts from "../artifacts/ERC721.json";
+import Web3 from "web3";
+
+const web3 = new Web3(Web3.givenProvider);
+const ercContract = new web3.eth.Contract(ERC721Artifacts.abi);
+
 export default function MyToken({ web3, ethAccount }) {
   const [tokenCount, setTokenCount] = React.useState(0);
   const [myTokens, setMyTokens] = React.useState([]);
   const [tokenURIs, setTokenURIs] = React.useState([]);
   const [nftAddress, setNftAddress] = React.useState("");
+  const [userContractAddrs, setUserContractAddrs] = React.useState([]);
+
+  React.useEffect(() => {
+    if (web3 && ethAccount) {
+      console.log("get another nfts");
+      console.log(web3.marketContract.methods);
+      web3.marketContract.methods
+        .fetchContractByUser()
+        .call({
+          from: ethAccount,
+        })
+        .then((contractAddrs) => {
+          console.log(contractAddrs);
+          setUserContractAddrs(contractAddrs);
+        });
+    }
+  }, [web3, ethAccount]);
+
+  React.useEffect(() => {
+    // userContractAddrs에 각각 요청을 보내어, token의 이동경로를 파악.
+    userContractAddrs.map((item) => {
+      ercContract.options.address = item;
+      console.log("token");
+      console.log(ercContract);
+
+      ercContract
+        .getPastEvents("Transfer", {
+          fromBlock: 0,
+          toBlock: "latest",
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+  }, [userContractAddrs]);
 
   React.useEffect(() => {
     if (web3 && ethAccount) {

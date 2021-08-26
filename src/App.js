@@ -12,6 +12,7 @@ import Minting from "./pages/Minting";
 import MyToken from "./pages/MyToken";
 import NFTDetail from "./pages/NFTDetail";
 import Query from "./pages/Query";
+import Account from "./pages/Account";
 
 // artifacts import
 import jnftArtifact from "./artifacts/JNFT.json";
@@ -78,6 +79,8 @@ function App() {
         <Route path="/minting" exact>
           <Minting ethAccount={ethAccount} web3={web3} />
         </Route>
+
+        <Route path="/account" exact component={Account} />
       </Switch>
     </Router>
   );

@@ -13,9 +13,6 @@ export const marketContract = new web3.eth.Contract(
   marketArtifact.networks["5777"].address
 );
 
-export const erc721Contract = new web3.eth.Contract(
-  erc721Artifact.abi,
-  erc721Artifact.networks["5777"].address
-);
+export const erc721Contract = new web3.eth.Contract(erc721Artifact.abi);
 
 export default web3;

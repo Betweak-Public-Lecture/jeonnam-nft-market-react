@@ -93,7 +93,19 @@ export default function TokenItem({ tokenId, contractAddr }) {
             if (!price) {
               return;
             }
-            // - marketContract에서 createMarketItem
+
+            // address _nftContract, uint256 _tokenId, uint256 _price
+            const receipt = await marketContract.methods
+              .createMarketItem(
+                contractAddr,
+                tokenId,
+                web3.utils.toWei(price, "ether")
+              )
+              .send({
+                from: account,
+                value: web3.utils.toWei("0.001", "ether"),
+              });
+            console.log(receipt);
           }}
         >
           판매

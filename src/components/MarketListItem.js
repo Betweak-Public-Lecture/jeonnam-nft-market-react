@@ -3,42 +3,84 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function MarketListItem({ item, web3, ethAccount }) {
-  console.log(item);
+import web3, { marketContract, erc721Contract } from "../utils/ether";
+import { ipfsToHttps } from "../utils/url";
+
+export default function MarketListItem({ item }) {
+  //   itemId: "0"
+  // nftContract: "0x6D466760Cfb2f73EADef5C68cD62b456157f7126"
+  // owner: "0x0000000000000000000000000000000000000000"
+  // price: "10000000000000000000"
+  // seller: "0x03F3D03f082eE06dF979EE5912B94793DcD52920"
+  // tokenId: "0"
+
+  const [ethAccount, setEtherAccount] = React.useState("");
+  const [tokenURI, setTokenURI] = React.useState("");
   /**
-   * [연습문제]
-   * props로 전달받은 item의 nftContract Address에 요청하여 이미지 URL (tokenURI) 받아오기.
+   * tokenInfo
+   * - name
+   * - description
+   * - image(ipfs://)
    */
-  const [imageURI, setImageURI] = React.useState("");
-  const [etherPrice, setEtherPrice] = React.useState("");
+  const [tokenInfo, setTokenInfo] = React.useState({
+    name: "",
+    description: "",
+    image: "",
+  });
+  const [tokenSymbol, setTokenSymbol] = React.useState("");
 
   React.useEffect(() => {
-    if (web3 && ethAccount) {
-      const nftContract = web3.jnftContract.clone();
-
+    if (item) {
+      const nftContract = erc721Contract.clone();
       nftContract.options.address = item.nftContract;
+
       nftContract.methods
-        .tokenURI(item.tokenId)
-        .call({
-          from: ethAccount,
+        .tokenURI(item.itemId)
+        .call()
+        .then((uri) => {
+          console.log(uri);
+          setTokenURI(uri);
+        });
+      web3.eth.requestAccounts().then((accounts) => {
+        const account = accounts[0];
+        setEtherAccount(account);
+      });
+
+      nftContract.methods
+        .symbol()
+        .call()
+        .then((tokenSymbol) => {
+          setTokenSymbol(tokenSymbol);
+        });
+    }
+  }, [item]);
+
+  React.useEffect(() => {
+    // 연습문제
+    // tokenURI는 현재 ipfs프로토콜로 기록되어있습니다.
+    // 해당 tokenURI가 존재할 때, 해당 url을 https로 변경하여 데이터를 가져오고
+    // 해당 데이터를 tokenInfo라는 state로 저장하세요.
+    if (tokenURI) {
+      const url = ipfsToHttps(tokenURI);
+      fetch(url)
+        .then((resp) => {
+          return resp.json();
         })
         .then((data) => {
-          setImageURI(data);
+          setTokenInfo(data);
         });
-
-      const etherPrice = web3.utils.fromWei(item.price, "ether");
-      setEtherPrice(etherPrice);
     }
-  }, [web3, ethAccount, item]);
+  }, [tokenURI]);
+
   return (
     <Card style={{ width: "18rem", color: "black", textDecoration: "none" }}>
-      <Card.Img variant="top" src={imageURI} />
+      <Card.Header>{tokenInfo.name}</Card.Header>
+      <Card.Img variant="top" src={ipfsToHttps(tokenInfo.image)} />
       <Card.Body>
-        <Card.Title></Card.Title>
+        <Card.Title>ETH {web3.utils.fromWei(item.price, "ether")}</Card.Title>
         <Card.Text>
-          <small>Minted by: {item.nftContract}</small> <br />
+          {/* <small>Minted by: {item.nftContract}</small> <br /> */}
           <small>seller: {item.seller} </small> <br />
-          <strong>ETH {etherPrice} </strong>
         </Card.Text>
         <Button
           variant="outline-dark"
@@ -60,6 +102,11 @@ export default function MarketListItem({ item, web3, ethAccount }) {
           Buy
         </Button>
       </Card.Body>
+      <Card.Footer>
+        {tokenSymbol}
+        {/* [연습]
+        해당하는 ERC721 NFTContract에 symbol이라는 함수를 호출하여 내용을 해당 위치에 Rendering */}
+      </Card.Footer>
     </Card>
   );
 }

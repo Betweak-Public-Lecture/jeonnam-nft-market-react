@@ -35,7 +35,7 @@ export default function MarketListItem({ item }) {
       nftContract.options.address = item.nftContract;
 
       nftContract.methods
-        .tokenURI(item.itemId)
+        .tokenURI(item.tokenId)
         .call()
         .then((uri) => {
           console.log(uri);
@@ -90,7 +90,7 @@ export default function MarketListItem({ item }) {
               alert("자신의 물건은 살수가 없습니다.");
               return;
             }
-            const result = await web3.marketContract.methods
+            const result = await marketContract.methods
               .createMarketSale(item.itemId)
               .send({
                 from: ethAccount,
